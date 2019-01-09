@@ -23,10 +23,10 @@ hds=[{'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) 
 
 mail_info = {
     "from": "493797069@qq.com",
-    "to": "wangyue1988cnu@163.com",
+    "to": "benben19891021@126.com",
     "hostname": "smtp.qq.com",
     "username": "493797069@qq.com",
-    "password": "xdxfkqlcyxsecajh",
+    "password": "################",
     "mail_encoding": "utf-8"
 }
 
@@ -47,7 +47,7 @@ def kd_spider():
     notice_ul = notice.find('ul')
     for notice_title in notice_ul.findAll('a'):
         if notice_title.text.find('2018年') > 0:
-            print(notice_title.text)
+            #print(notice_title.text)
             #发邮件#
             send_mail("石景山师范附幼2019年申报已开始")
     return
