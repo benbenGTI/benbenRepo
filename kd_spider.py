@@ -12,6 +12,8 @@ from email.header import Header
 from bs4 import BeautifulSoup
 from imp import reload
 from openpyxl import Workbook
+from qcloudsms_py import SmsSingleSender
+from qcloudsms_py.httpclient import HTTPError
 
 reload(sys)
 #sys.setdefaultencoding('utf8')
@@ -23,11 +25,17 @@ hds=[{'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) 
 
 mail_info = {
     "from": "493797069@qq.com",
-    "to": "benben19891021@126.com",
+    "to": "wangyue1988cnu@163.com",
     "hostname": "smtp.qq.com",
-    "username": "493797069@qq.com",
-    "password": "################",
+    "username": "",
+    "password": "",
     "mail_encoding": "utf-8"
+}
+
+sms_info = {
+    "appid": "",
+    "appkey": "",
+    "sms_sign": ""
 }
 
 def kd_spider():
@@ -47,9 +55,11 @@ def kd_spider():
     notice_ul = notice.find('ul')
     for notice_title in notice_ul.findAll('a'):
         if notice_title.text.find('2018年') > 0:
-            #print(notice_title.text)
+            print(notice_title.text)
             #发邮件#
-            send_mail("石景山师范附幼2019年申报已开始")
+            #send_mail("石景山师范附幼2019年申报已开始")
+            #发短信#
+            send_sms(["18810450157"], '265617', ['石景山师范妇幼'])
     return
 
 def send_mail(msg):
@@ -68,6 +78,19 @@ def send_mail(msg):
 
     smtp.quit()
 
+# phone_number 接收手机号
+# template_id 腾讯云短信模板
+def send_sms(phone_number, template_id, sms_param):
+    sms_sender = SmsSingleSender(sms_info["appid"], sms_info["appkey"])
+    try:
+        result = sms_sender.send_with_param(86, phone_number[0],
+            template_id, sms_param, sign=sms_info["sms_sign"], extend="", ext="")
+    except HTTPError as e:
+        print(e)
+    except Exception as e:
+        print(e)
+    print(result)
+    return
 
 if __name__=='__main__':
     kd_spider()
